@@ -76,7 +76,7 @@ public class LoginActivity extends Activity {
             }
         });
         /* Create the Firebase ref that is used for all authentication with Firebase */
-        mFirebaseRef = new Firebase(getResources().getString(R.string.firebase_url));
+        mFirebaseRef = new Firebase("");//getResources().getString(R.string.firebase_url));//FIXME
 
         /* Setup the progress dialog that is displayed later when authenticating with Firebase */
         mAuthProgressDialog = new ProgressDialog(LoginActivity.this);

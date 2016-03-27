@@ -2,11 +2,17 @@ package williamamills.colorify;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
 
 public class MainActivity extends Activity {
     Button mainButton;
@@ -18,7 +24,19 @@ public class MainActivity extends Activity {
         mainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), ImageViewActivity.class);
+                Intent i = new Intent(getApplicationContext(), ItemsList.class);
+                ArrayList<Uri> uris = new ArrayList<Uri>();
+                // fill uris
+                String s = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString();
+                for(int k = 0; k < 10; k++) {
+                    Uri img = Uri.fromFile(new File(s + "/Camera/IMG_20160327_164935.jpg"));
+                    uris.add(img);
+                    img = Uri.fromFile(new File(s + "/Camera/IMG_20160327_165018.jpg"));
+                    uris.add(img);
+                }
+                Bundle extras = new Bundle();
+                extras.putParcelableArrayList("uris", uris);
+                i.putExtras(extras);
                 startActivity(i);
             }
         });
