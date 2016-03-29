@@ -2,6 +2,7 @@ package williamamills.colorify;
 
 import android.app.Activity;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +16,9 @@ public class ImageViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_view);
         imageView = (ImageView) findViewById(R.id.image);
-
+        Bundle extras = getIntent().getExtras();
+        Uri u = extras.getParcelable("uri");
+        imageView.setImageURI(u);
     }
 
     @Override

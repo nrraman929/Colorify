@@ -3,6 +3,7 @@ package williamamills.colorify;
 import android.app.ListActivity;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 public class ItemsList extends ListActivity {
 
     private ItemsAdapter adapter;
+    private ArrayList<Parcelable> uris;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +35,7 @@ public class ItemsList extends ListActivity {
         setContentView(R.layout.activity_items_list);
         Bundle extras = getIntent().getExtras();
         ArrayList<ClipData.Item> arrayList = new ArrayList<>();
-        ArrayList<Parcelable> uris =
-               extras.getParcelableArrayList("uris");
+        uris = extras.getParcelableArrayList("uris");
         this.adapter = new ItemsAdapter(this, R.layout.items_list_item, uris);
         setListAdapter(this.adapter);
     }
@@ -80,5 +81,10 @@ public class ItemsList extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         this.adapter.getItem(position);//.click(this.getApplicationContext());
+        Intent i = new Intent(getApplicationContext(), ImageViewActivity.class);
+        Bundle extras = new Bundle();
+        extras.putParcelable("uri", uris.get(position));
+        i.putExtras(extras);
+        startActivity(i);
     }
 }
