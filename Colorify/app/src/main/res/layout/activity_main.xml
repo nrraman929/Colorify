@@ -10,5 +10,11 @@
         android:layout_height="wrap_content"
         android:text="@string/login"
         android:id="@+id/main_enter"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Check"
+        android:id="@+id/b2"
+        android:layout_toRightOf="@+id/main_enter"/>
 
 </RelativeLayout>

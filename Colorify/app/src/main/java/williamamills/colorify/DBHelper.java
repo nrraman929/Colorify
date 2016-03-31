@@ -97,7 +97,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return numRows;
     }
 
-    public boolean updatePicture (Integer id,  JSONArray picture, String tag)
+    public boolean updatePhoto (Integer id,  JSONArray picture, String tag)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -107,7 +107,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Integer deleteActivity (Integer id)
+    public Integer deletePhoto (Integer id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_NAME,
@@ -115,7 +115,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 new String[] { Integer.toString(id) });
     }
 
-    public ArrayList<String> getAllPictures()
+    public ArrayList<String> getAllPhotos()
     {
         ArrayList<String> array_list = new ArrayList<String>();
 
@@ -132,7 +132,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<String> getPhoto(int id)
+    public JSONArray getPhoto(int id)
     {
         ArrayList<String> array_list = new ArrayList<String>();
 
@@ -140,15 +140,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
         Cursor res =  db.rawQuery("select * from " + TABLE_NAME + " where id=" + id + "", null);
         res.moveToPosition(0);
-        String jsonString = res.getString(res.getColumnIndex(COLUMN_ID));
+        String jsonString = res.getString(res.getColumnIndex(COLUMN_PICTURE));
         res.close();
+        JSONArray j;
         try {
-            JSONArray j = new JSONArray(jsonString);
+            j = new JSONArray(jsonString);
         }catch(Exception e){
-
+            j = null;
         }
         //TODO get JSON to Photo
-        return array_list;
+        return j;
     }
 
 }

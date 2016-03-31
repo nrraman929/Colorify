@@ -10,20 +10,50 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
     Button mainButton;
+    JSONArray j;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainButton = (Button) findViewById(R.id.main_enter);
+        final JSONArray jArrayFacebookData = new JSONArray();
+        JSONObject jObjectType = new JSONObject();
+        try {
+            // put elements into the object as a key-value pair
+            jObjectType.put("type", "instagram_json");
+
+            jArrayFacebookData.put(jObjectType);
+
+            // 2nd array for user information
+            JSONObject jObjectData = new JSONObject();
+
+            // Create Json Object using Facebook Data
+            jObjectData.put("facebook_user_id", "id");
+            jObjectData.put("first_name", "Alexander");
+            jObjectData.put("last_name", "Mills");
+            jObjectData.put("email", "wamills1@gmail.com");
+            jObjectData.put("username", "wamills");
+            jObjectData.put("birthday", "january");
+            jObjectData.put("gender", "Male");
+            jObjectData.put("location", "Austin");
+            jObjectData.put("display_photo", "a");
+            jArrayFacebookData.put(jObjectData);
+        }catch(Exception e){
+
+        }
         mainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 Intent i = new Intent(getApplicationContext(), ItemsList.class);
                 ArrayList<Uri> uris = new ArrayList<Uri>();
                 // fill uris
@@ -37,7 +67,19 @@ public class MainActivity extends Activity {
                 Bundle extras = new Bundle();
                 extras.putParcelableArrayList("uris", uris);
                 i.putExtras(extras);
-                startActivity(i);
+                startActivity(i);*/
+                DBHelper mydb = DBHelper.getInstance(getApplicationContext());
+                mydb.insertPhoto(jArrayFacebookData, "First");
+            }
+        });
+        Button b2 = (Button) findViewById(R.id.b2);
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DBHelper mydb = DBHelper.getInstance(getApplicationContext());
+                JSONArray j = mydb.getPhoto(1);
+                Integer i = 1;
+                i++;
             }
         });
     }
