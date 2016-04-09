@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 public class InstagramAPIHelper extends AsyncTask<Void, Void, String> {
 
     /* Popular Endpoint*/
-
+    String API_URL = "https://api.instagram.com/v1/media/popular?client_id=e05c462ebd86446ea48a5af73769b602";
 
     protected void onPreExecute() {
         /* initialization before network call in background,
@@ -27,7 +27,6 @@ public class InstagramAPIHelper extends AsyncTask<Void, Void, String> {
 
     protected String doInBackground(Void... urls) {
 
-        String API_URL = "https://api.instagram.com/v1/media/popular?client_id=e05c462ebd86446ea48a5af73769b602";
         try {
             URL url = new URL(API_URL);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -65,7 +64,7 @@ public class InstagramAPIHelper extends AsyncTask<Void, Void, String> {
                 for(int i =0;i<data.length();i++){
                     System.out.println(data.getJSONObject(i)); // print returned json objects
                 }
-                System.out.println(data.length()); //print number of objects returned (24)
+                System.out.println(data.length()); //print number of objects returned (~24)
             } catch(JSONException e){
                 System.out.println("JSONERROR: " + e.getMessage());
             }
