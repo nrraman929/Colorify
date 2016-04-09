@@ -64,6 +64,16 @@ public class InstagramAPIHelper extends AsyncTask<Void, Void, String> {
                 for(int i =0;i<data.length();i++){
                     System.out.println(data.getJSONObject(i)); // print returned json objects
                 }
+
+                JSONObject test = data.getJSONObject(1); //photo at index 1
+                JSONObject images = test.getJSONObject("images");
+                JSONObject thumbnail = images.getJSONObject("thumbnail");
+
+                String thumbnail_url = thumbnail.getString("url");
+
+                /* Uncomment to see the returned color of the photo at index 1 */
+                //new ColorHelper().execute(thumbnail_url);
+
                 System.out.println(data.length()); //print number of objects returned (~24)
             } catch(JSONException e){
                 System.out.println("JSONERROR: " + e.getMessage());
