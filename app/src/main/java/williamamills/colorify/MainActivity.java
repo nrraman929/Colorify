@@ -82,6 +82,9 @@ public class MainActivity extends Activity {
                 i++;
             }
         });
+
+        /*Uncomment to execute network call */
+        //new InstagramAPIHelper().execute();
     }
 
     @Override
