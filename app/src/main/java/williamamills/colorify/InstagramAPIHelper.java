@@ -3,7 +3,9 @@ package williamamills.colorify;
 /**
  * Created by Nishant on 4/9/16.
  */
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,11 +20,15 @@ public class InstagramAPIHelper extends AsyncTask<Void, Void, String> {
 
     /* Popular Endpoint*/
     String API_URL = "https://api.instagram.com/v1/media/popular?client_id=e05c462ebd86446ea48a5af73769b602";
+    Context ctx;
 
     protected void onPreExecute() {
         /* initialization before network call in background,
         * potentially do add different endpoints/search criteria */
 
+    }
+    protected void OnCreate(Context context){
+        ctx = context;
     }
 
     protected String doInBackground(Void... urls) {
@@ -54,6 +60,7 @@ public class InstagramAPIHelper extends AsyncTask<Void, Void, String> {
         /* what do with the network call response,
          * potentially to store into sql db */
         if(response == null) {
+            Toast.makeText(ctx, "THERE WAS AN ERROR RETRIEVING JSON DATA", Toast.LENGTH_LONG).show();
             System.out.println("THERE WAS AN ERROR RETRIEVING JSON DATA");
         }
         else {
