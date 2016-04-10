@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
                 Photo p = new Photo(new JSONObject(), getApplicationContext());
                 GetBitmap g = new GetBitmap(getApplicationContext(), p);
                 try {
-                    g.execute("https://scontent.cdninstagram.com/t51.2885-15/s150x150/e35/12445772_589126311254658_1821092435_n.jpg").get();
+                    g.execute("https://scontent.cdninstagram.com/t51.2885-15/s150x150/e35/12445772_589126311254658_1821092435_n.jpg", "http://assets9.pop-buzz.com/2015/50/neko-atsume-header-1450446679-responsive-large-0.jpg", "http://nerdist.com/wp-content/uploads/2015/12/Supernatural-Neko-Atsume-12302015.jpg","http://i.imgur.com/N7gJaR0.jpg","https://i.imgur.com/WJED9LY.png","http://i.imgur.com/H5j8qy6.jpg").get();
                     g.get(1000, TimeUnit.MILLISECONDS);
                 }catch(Exception e){
 
@@ -130,4 +130,5 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

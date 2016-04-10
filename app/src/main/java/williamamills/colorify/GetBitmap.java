@@ -13,6 +13,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 /**
  * Created by Alexander on 4/9/2016.
  */
-public class GetBitmap extends AsyncTask<String, Void, Bitmap> {
+public class GetBitmap extends AsyncTask<String, Void, ArrayList<Bitmap>> {
     protected void onPreExecute() {
         /* initialization before network call in background,
         * potentially do add different endpoints/search criteria */
@@ -36,18 +38,21 @@ public class GetBitmap extends AsyncTask<String, Void, Bitmap> {
         photo = p;
     }
 
-    protected Bitmap doInBackground(String... urls) {
-
+    protected ArrayList<Bitmap> doInBackground(String... urls) {
+        ArrayList<Bitmap> arrayList = new ArrayList<>();
         try {
             //URL url = new URL(urls[0]);
-           java.net.URL url = new java.net.URL(urls[0]);
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
+            for(String u : urls) {
+                java.net.URL url = new java.net.URL(u);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                arrayList.add(myBitmap);
+            }
+            return arrayList;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -58,25 +63,45 @@ public class GetBitmap extends AsyncTask<String, Void, Bitmap> {
 
     }
 
-    protected void onPostExecute(Bitmap response) {
+    protected void onPostExecute(ArrayList<Bitmap> response) {
         /* what do with the network call response,
          * potentially to store into sql db */
-        if(response == null) {
+        if(response.isEmpty()) {
             Toast.makeText(ctx, "THERE WAS AN ERROR RETRIEVING JSON DATA", Toast.LENGTH_LONG).show();
             System.out.println("THERE WAS AN ERROR RETRIEVING JSON DATA");
         }
         else {
-            photo.setBitmap(response);
+            //photo.setBitmap(response);
             Intent i = new Intent(ctx, ItemsList.class);
-            ArrayList<Bitmap> uris = new ArrayList<Bitmap>();
-            uris.add(photo.bitmap);
+            ArrayList<byte[]> a = new ArrayList<>();
+            //ArrayList<Bitmap> uris = new ArrayList<Bitmap>();
+            for(int k = 0; k < response.size(); k++) {
+               createImageFromBitmap(response.get(k), k);
+            }
+            //uris.add(photo.bitmap);
             Bundle extras = new Bundle();
-            extras.putParcelableArrayList("uris", uris);
+            extras.putInt("uris", response.size());
+            //extras.putParcelableArrayList("uris",a);
             i.putExtras(extras);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ctx.startActivity(i);
 
         }
 
+    }
+    public String createImageFromBitmap(Bitmap bitmap, int i) {
+        String fileName = "myImage" + i;//no .png or .jpg needed
+        try {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            FileOutputStream fo = ctx.openFileOutput(fileName, Context.MODE_PRIVATE);
+            fo.write(bytes.toByteArray());
+            // remember close file output
+            fo.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            fileName = null;
+        }
+        return fileName;
     }
 }
