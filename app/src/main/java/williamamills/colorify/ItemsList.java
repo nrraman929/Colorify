@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
@@ -79,9 +80,10 @@ public class ItemsList extends ListActivity {
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = vi.inflate(R.layout.items_list_item, null);
             }
-
+            TextView textView = (TextView) v.findViewById(R.id.list_item_title);
             Bitmap it = (Bitmap) bitmapCache.get(position);//items.get(position);
-
+            Integer num = position;
+            textView.setText(num.toString());
             ImageView iv = (ImageView) v.findViewById(R.id.list_item_image);
             if(it!=null){
                 if (iv != null) {
