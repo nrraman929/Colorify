@@ -3,6 +3,7 @@ package williamamills.colorify;
 /**
  * Created by Nishant on 4/9/16.
  */
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -21,13 +22,15 @@ public class InstagramAPIHelper extends AsyncTask<Void, Void, String> {
     /* Popular Endpoint*/
     String API_URL = "https://api.instagram.com/v1/media/popular?client_id=e05c462ebd86446ea48a5af73769b602";
     Context ctx;
+    MainActivity activity;
 
     protected void onPreExecute() {
         /* initialization before network call in background,
         * potentially do add different endpoints/search criteria */
 
     }
-    protected void OnCreate(Context context){
+    public InstagramAPIHelper(MainActivity act, Context context){
+        activity = act;
         ctx = context;
     }
 
@@ -75,7 +78,7 @@ public class InstagramAPIHelper extends AsyncTask<Void, Void, String> {
                 JSONObject test = data.getJSONObject(1); //photo at index 1
                 JSONObject images = test.getJSONObject("images");
                 JSONObject thumbnail = images.getJSONObject("thumbnail");
-
+                activity.setJSON(test);
                 String thumbnail_url = thumbnail.getString("url");
 
                 /* Uncomment to see the returned color of the photo at index 1 */

@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.ArrayAdapter;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -75,7 +76,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return db;
     }
 
-    public boolean insertPhoto  (JSONArray picture, String tag)
+    public boolean insertPhoto  (JSONObject picture, String tag)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -132,7 +133,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public JSONArray getPhoto(int id)
+    public JSONObject getPhoto(int id)
     {
         ArrayList<String> array_list = new ArrayList<String>();
 
@@ -142,9 +143,9 @@ public class DBHelper extends SQLiteOpenHelper {
         res.moveToPosition(0);
         String jsonString = res.getString(res.getColumnIndex(COLUMN_PICTURE));
         res.close();
-        JSONArray j;
+        JSONObject j;
         try {
-            j = new JSONArray(jsonString);
+            j = new JSONObject(jsonString);
         }catch(Exception e){
             j = null;
         }

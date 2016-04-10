@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         mainButton = (Button) findViewById(R.id.main_enter);
         final JSONArray jArrayFacebookData = new JSONArray();
-        JSONObject jObjectType = new JSONObject();
+        final JSONObject jObjectType = new JSONObject();
         try {
             // put elements into the object as a key-value pair
             jObjectType.put("type", "instagram_json");
@@ -68,8 +68,10 @@ public class MainActivity extends Activity {
                 extras.putParcelableArrayList("uris", uris);
                 i.putExtras(extras);
                 startActivity(i);*/
-                DBHelper mydb = DBHelper.getInstance(getApplicationContext());
-                mydb.insertPhoto(jArrayFacebookData, "First");
+                /*DBHelper mydb = DBHelper.getInstance(getApplicationContext());
+                mydb.insertPhoto(jObjectType, "First");*/
+                InstagramAPIHelper iHelper = new InstagramAPIHelper(MainActivity.this, getApplicationContext());
+                iHelper.execute();
             }
         });
         Button b2 = (Button) findViewById(R.id.b2);
@@ -77,7 +79,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 DBHelper mydb = DBHelper.getInstance(getApplicationContext());
-                JSONArray j = mydb.getPhoto(1);
+                JSONObject j = mydb.getPhoto(1);
                 Integer i = 1;
                 i++;
             }
@@ -86,7 +88,14 @@ public class MainActivity extends Activity {
         /*Uncomment to execute network call */
         //new InstagramAPIHelper().execute();
     }
-
+    public void setJSON(JSONObject obj){
+        //Add your parsing logic here
+        JSONObject a = new JSONObject();
+        DBHelper mydb = DBHelper.getInstance(getApplicationContext());
+        mydb.insertPhoto(a, "hey");
+        int i = 0;
+        i++;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
