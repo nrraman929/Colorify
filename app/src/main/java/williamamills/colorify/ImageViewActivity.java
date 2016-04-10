@@ -19,6 +19,7 @@ public class ImageViewActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         Uri u = extras.getParcelable("uri");
         imageView.setImageURI(u);
+        //imageView.setImageBitmap();
     }
 
     @Override

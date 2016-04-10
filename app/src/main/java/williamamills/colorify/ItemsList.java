@@ -4,6 +4,7 @@ import android.app.ListActivity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ public class ItemsList extends ListActivity {
         Bundle extras = getIntent().getExtras();
         ArrayList<ClipData.Item> arrayList = new ArrayList<>();
         uris = extras.getParcelableArrayList("uris");
+
         this.adapter = new ItemsAdapter(this, R.layout.items_list_item, uris);
         setListAdapter(this.adapter);
     }
@@ -57,15 +59,18 @@ public class ItemsList extends ListActivity {
                 v = vi.inflate(R.layout.items_list_item, null);
             }
 
-            Uri it = (Uri) items.get(position);
+            //Uri it = (Uri) items.get(position);
+            Bitmap it = (Bitmap) items.get(position);
             if (it != null) {
                 ImageView iv = (ImageView) v.findViewById(R.id.list_item_image);
                 if (iv != null) {
                     try {
-                        InputStream inputStream = getContentResolver().openInputStream(it);
+                       /* InputStream inputStream = getContentResolver().openInputStream(it);
                         Drawable yourDrawable = Drawable.createFromStream(inputStream, it.toString());
-                        iv.setImageDrawable(yourDrawable);
-                    } catch (FileNotFoundException e) {
+                        iv.setImageDrawable(yourDrawable);*/
+                        iv.setImageBitmap(it);
+                    } //catch (FileNotFoundException e) {
+                    catch (Exception e){
                         //yourDrawable = getResources().getDrawable(R.drawable.default_image);
                         int c = 3;
 

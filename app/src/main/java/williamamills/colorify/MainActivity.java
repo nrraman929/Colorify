@@ -2,6 +2,7 @@ package williamamills.colorify;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,6 +17,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends Activity {
     Button mainButton;
@@ -53,25 +55,36 @@ public class MainActivity extends Activity {
         mainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
+
                 Intent i = new Intent(getApplicationContext(), ItemsList.class);
-                ArrayList<Uri> uris = new ArrayList<Uri>();
+                ArrayList<Bitmap> uris = new ArrayList<Bitmap>();
+                /*ArrayList<Uri> uris = new ArrayList<Uri>();
                 // fill uris
+
                 String s = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString();
                 for(int k = 0; k < 10; k++) {
                     Uri img = Uri.fromFile(new File(s + "/Camera/IMG_20160327_164935.jpg"));
                     uris.add(img);
                     img = Uri.fromFile(new File(s + "/Camera/IMG_20160327_165018.jpg"));
                     uris.add(img);
-                }
+                }*/
                 Bundle extras = new Bundle();
+                Photo p = new Photo(new JSONObject(), getApplicationContext());
+                GetBitmap g = new GetBitmap(getApplicationContext(), p);
+                try {
+                    g.execute("https://scontent.cdninstagram.com/t51.2885-15/s150x150/e35/12445772_589126311254658_1821092435_n.jpg").get();
+                    g.get(1000, TimeUnit.MILLISECONDS);
+                }catch(Exception e){
+
+                }
+                uris.add(p.bitmap);
                 extras.putParcelableArrayList("uris", uris);
                 i.putExtras(extras);
-                startActivity(i);*/
+               // startActivity(i);
                 /*DBHelper mydb = DBHelper.getInstance(getApplicationContext());
                 mydb.insertPhoto(jObjectType, "First");*/
-                InstagramAPIHelper iHelper = new InstagramAPIHelper(MainActivity.this, getApplicationContext());
-                iHelper.execute();
+                /*InstagramAPIHelper iHelper = new InstagramAPIHelper(MainActivity.this, getApplicationContext());
+                iHelper.execute();*/
             }
         });
         Button b2 = (Button) findViewById(R.id.b2);
