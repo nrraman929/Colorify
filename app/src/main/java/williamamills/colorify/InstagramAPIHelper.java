@@ -16,6 +16,7 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class InstagramAPIHelper extends AsyncTask<Void, Void, String> {
 
@@ -74,12 +75,17 @@ public class InstagramAPIHelper extends AsyncTask<Void, Void, String> {
                 for(int i =0;i<data.length();i++){
                     System.out.println(data.getJSONObject(i)); // print returned json objects
                 }
-
-                JSONObject test = data.getJSONObject(1); //photo at index 1
-                JSONObject images = test.getJSONObject("images");
-                JSONObject thumbnail = images.getJSONObject("thumbnail");
-                activity.setJSON(test);
-                String thumbnail_url = thumbnail.getString("url");
+                ArrayList<String> tester = new ArrayList<>();
+                for(int i = 0; i < 5; i++) {
+                    JSONObject test = data.getJSONObject(i+1); //photo at index 1
+                    JSONObject images = test.getJSONObject("images");
+                    JSONObject thumbnail = images.getJSONObject("thumbnail");
+                    String thumbnailUrl = thumbnail.getString("url");
+                    tester.add(thumbnailUrl);
+                }
+                String[] array = tester.toArray(new String[0]);
+                activity.setJSON(array);
+                //String thumbnail_url = thumbnail.getString("url");
 
                 /* Uncomment to see the returned color of the photo at index 1 */
                 //new ColorHelper().execute(thumbnail_url);

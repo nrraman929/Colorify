@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
         }catch(Exception e){
 
         }
+        mainButton.setText("ImageListView Test");
         mainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,26 +89,29 @@ public class MainActivity extends Activity {
             }
         });
         Button b2 = (Button) findViewById(R.id.b2);
+        b2.setText("Instagram Test");
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DBHelper mydb = DBHelper.getInstance(getApplicationContext());
-                JSONObject j = mydb.getPhoto(1);
-                Integer i = 1;
-                i++;
+                /*InstagramAPIHelper iHelper = new InstagramAPIHelper(MainActivity.this, getApplicationContext());
+                iHelper.execute();*/
             }
         });
 
         /*Uncomment to execute network call */
         //new InstagramAPIHelper().execute();
     }
-    public void setJSON(JSONObject obj){
+    public void setJSON(String[] obj){
         //Add your parsing logic here
-        JSONObject a = new JSONObject();
-        DBHelper mydb = DBHelper.getInstance(getApplicationContext());
-        mydb.insertPhoto(a, "hey");
-        int i = 0;
-        i++;
+
+        Photo p = new Photo(new JSONObject(), getApplicationContext());
+        GetBitmap g = new GetBitmap(getApplicationContext(), p);
+        try {
+            g.execute(obj);
+            g.get(1000, TimeUnit.MILLISECONDS);
+        }catch(Exception e){
+
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
