@@ -36,6 +36,7 @@ public class ItemsList extends ListActivity {
     //private ArrayList<Parcelable> u;
     LruCache bitmapCache;
     ItemsList itemsList;
+    ArrayList<Photo> photoList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,13 +44,18 @@ public class ItemsList extends ListActivity {
         setContentView(R.layout.activity_items_list);
         Bundle extras = getIntent().getExtras();
         ArrayList<ClipData.Item> arrayList = new ArrayList<>();
-        Integer numImages = extras.getInt("uris");
+        //Integer numImages = extras.getInt("uris");
         int cacheSize = 4 * 1024 * 1024; // 4MiB
         bitmapCache = new LruCache(cacheSize) {
             protected int sizeOf(String key, Bitmap value) {
                 return value.getByteCount();
 
             }};
+        ArrayList<Parcelable> dummy = extras.getParcelableArrayList("photos");
+        for(Parcelable parcelable : dummy){
+            photoList.add((Photo) parcelable);
+        }
+        Integer numImages = photoList.size();
         for(int k = 0; k < numImages; k++){
             try{
                 uris.add(BitmapFactory.decodeStream(openFileInput("myImage" + k)));
@@ -83,7 +89,7 @@ public class ItemsList extends ListActivity {
             TextView textView = (TextView) v.findViewById(R.id.list_item_title);
             Bitmap it = (Bitmap) bitmapCache.get(position);//items.get(position);
             Integer num = position;
-            textView.setText(num.toString());
+            textView.setText(photoList.get(position).getLocation());
             ImageView iv = (ImageView) v.findViewById(R.id.list_item_image);
             if(it!=null){
                 if (iv != null) {

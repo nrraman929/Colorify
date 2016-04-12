@@ -11,10 +11,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/list_item_tag"/>
 <ImageView
-    android:layout_width="500dp"
-    android:layout_height="500dp"
+    android:layout_width="250dp"
+    android:layout_height="250dp"
     android:layout_gravity="center_vertical"
     android:layout_centerHorizontal="true"
-    android:id="@+id/list_item_image"/>
+    android:id="@+id/list_item_image"
+    android:layout_below="@+id/list_item_title"/>
 
 </RelativeLayout>

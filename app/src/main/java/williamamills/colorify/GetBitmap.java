@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -32,10 +33,11 @@ public class GetBitmap extends AsyncTask<String, Void, ArrayList<Bitmap>> {
 
     }
     Context ctx;
-    Photo photo;
-    public GetBitmap(Context context, Photo p){
+    ArrayList<Photo> photoList;
+
+    public GetBitmap(Context context, ArrayList<Photo> p){
         ctx = context;
-        photo = p;
+        photoList = p;
     }
 
     protected ArrayList<Bitmap> doInBackground(String... urls) {
@@ -71,21 +73,16 @@ public class GetBitmap extends AsyncTask<String, Void, ArrayList<Bitmap>> {
             System.out.println("THERE WAS AN ERROR RETRIEVING JSON DATA");
         }
         else {
-            //photo.setBitmap(response);
             Intent i = new Intent(ctx, ItemsList.class);
-            ArrayList<byte[]> a = new ArrayList<>();
-            //ArrayList<Bitmap> uris = new ArrayList<Bitmap>();
             for(int k = 0; k < response.size(); k++) {
                createImageFromBitmap(response.get(k), k);
             }
-            //uris.add(photo.bitmap);
             Bundle extras = new Bundle();
-            extras.putInt("uris", response.size());
-            //extras.putParcelableArrayList("uris",a);
+            //extras.putInt("uris", response.size());
+            extras.putParcelableArrayList("photos", photoList);
             i.putExtras(extras);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ctx.startActivity(i);
-
         }
 
     }

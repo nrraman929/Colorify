@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Environment;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -21,88 +23,56 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Alexander on 3/23/2016.
  */
-public class Photo {
+public class Photo implements Parcelable{
     private String location;
     private String tags;
-    private String index;
+    //private String index;
     private String likes;
-    private Image picture;
-    public Bitmap bitmap;
-    Context mCtx;
-    public Photo(JSONObject json, Context ctx){
-       /* picture = pic;
-        location = loc;
-        tags = tag;
-        index = ind;
-        likes = like;*/
-        mCtx = ctx;
+    private String bitmapAddress;
 
-       // bitmap = getBitmapFromURL("https://scontent.cdninstagram.com/t51.2885-15/s150x150/e35/12445772_589126311254658_1821092435_n.jpg");
-
-    }
-     Bitmap getBitmapFromURL(String src) {
-        try {
-            java.net.URL url = new java.net.URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    private void getImg(){
-        try
-        {
-            URL url = new URL("Enter the URL to be downloaded");
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setDoOutput(true);
-            urlConnection.connect();
-            File SDCardRoot = Environment.getExternalStorageDirectory().getAbsoluteFile();
-            String filename="downloadedFile.png";
-            Log.i("Local filename:", "" + filename);
-            File file = new File(SDCardRoot,filename);
-            if(file.createNewFile())
-            {
-                file.createNewFile();
-            }
-            FileOutputStream fileOutput = new FileOutputStream(file);
-            InputStream inputStream = urlConnection.getInputStream();
-            int totalSize = urlConnection.getContentLength();
-            int downloadedSize = 0;
-            byte[] buffer = new byte[1024];
-            int bufferLength = 0;
-            while ( (bufferLength = inputStream.read(buffer)) > 0 )
-            {
-                fileOutput.write(buffer, 0, bufferLength);
-                downloadedSize += bufferLength;
-                Log.i("Progress:","downloadedSize:"+downloadedSize+"totalSize:"+ totalSize) ;
-            }
-            fileOutput.close();
-            //if(downloadedSize==totalSize) filepath=file.getPath();
-        }
-        catch (MalformedURLException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            //filepath=null;
-            e.printStackTrace();
-        }
-        //Log.i("filepath:"," "+filepath) ;
-        //return filepath;
+    public Photo(String _location, String _tags, String _likes, String _bitmapAddress){
+        location = _location;
+        tags = _tags;
+        likes = _likes;
+        bitmapAddress = _bitmapAddress;
     }
     public String getLocation(){return location;}
     public String getTags(){return tags;}
     public String getLikes(){return likes;}
-    public Image getPicture(){return picture;}
-    public void setBitmap(Bitmap b){
-        bitmap = b;
+    public String getBitmapAddress(){return bitmapAddress;}
+    public void setBitmapAddress(String _bitmapAddress){
+        bitmapAddress = _bitmapAddress;
     }
+    // Parcelling part
+    public Photo(Parcel in){
+        String[] data = new String[4];
+
+        in.readStringArray(data);
+        this.location = data[0];
+        this.tags = data[1];
+        this.likes = data[2];
+        this.bitmapAddress = data[3];
+    }
+
+    @Override
+    public int describeContents(){
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] {this.location,
+                this.tags,
+                this.likes, this.bitmapAddress});
+    }
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Photo createFromParcel(Parcel in) {
+            return new Photo(in);
+        }
+
+        public Photo[] newArray(int size) {
+            return new Photo[size];
+        }
+    };
 }
+

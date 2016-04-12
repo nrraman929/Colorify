@@ -56,36 +56,22 @@ public class MainActivity extends Activity {
         mainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent i = new Intent(getApplicationContext(), ItemsList.class);
                 ArrayList<Bitmap> uris = new ArrayList<Bitmap>();
-                /*ArrayList<Uri> uris = new ArrayList<Uri>();
-                // fill uris
-
-                String s = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString();
-                for(int k = 0; k < 10; k++) {
-                    Uri img = Uri.fromFile(new File(s + "/Camera/IMG_20160327_164935.jpg"));
-                    uris.add(img);
-                    img = Uri.fromFile(new File(s + "/Camera/IMG_20160327_165018.jpg"));
-                    uris.add(img);
-                }*/
                 Bundle extras = new Bundle();
-                Photo p = new Photo(new JSONObject(), getApplicationContext());
-                GetBitmap g = new GetBitmap(getApplicationContext(), p);
+                ArrayList<Photo> testPhotoList = new ArrayList<Photo>();
+                for(Integer j = 0; j < 6; j++) {
+                    Photo p = new Photo(j.toString(), "", "", "");
+                    testPhotoList.add(p);
+                }
+                GetBitmap g = new GetBitmap(getApplicationContext(), testPhotoList);
                 try {
                     g.execute("https://scontent.cdninstagram.com/t51.2885-15/s150x150/e35/12445772_589126311254658_1821092435_n.jpg", "http://assets9.pop-buzz.com/2015/50/neko-atsume-header-1450446679-responsive-large-0.jpg", "http://nerdist.com/wp-content/uploads/2015/12/Supernatural-Neko-Atsume-12302015.jpg","http://i.imgur.com/N7gJaR0.jpg","https://i.imgur.com/WJED9LY.png","http://i.imgur.com/H5j8qy6.jpg").get();
                     g.get(1000, TimeUnit.MILLISECONDS);
                 }catch(Exception e){
 
                 }
-                uris.add(p.bitmap);
-                extras.putParcelableArrayList("uris", uris);
-                i.putExtras(extras);
                // startActivity(i);
-                /*DBHelper mydb = DBHelper.getInstance(getApplicationContext());
-                mydb.insertPhoto(jObjectType, "First");*/
-                /*InstagramAPIHelper iHelper = new InstagramAPIHelper(MainActivity.this, getApplicationContext());
-                iHelper.execute();*/
             }
         });
         Button b2 = (Button) findViewById(R.id.b2);
@@ -93,19 +79,14 @@ public class MainActivity extends Activity {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*InstagramAPIHelper iHelper = new InstagramAPIHelper(MainActivity.this, getApplicationContext());
-                iHelper.execute();*/
+                InstagramAPIHelper iHelper = new InstagramAPIHelper(MainActivity.this, getApplicationContext());
+                iHelper.execute();
             }
         });
 
-        /*Uncomment to execute network call */
-        //new InstagramAPIHelper().execute();
     }
-    public void setJSON(String[] obj){
-        //Add your parsing logic here
-
-        Photo p = new Photo(new JSONObject(), getApplicationContext());
-        GetBitmap g = new GetBitmap(getApplicationContext(), p);
+    public void setJSON(String[] obj, ArrayList<Photo> photoList){
+        GetBitmap g = new GetBitmap(getApplicationContext(), photoList);
         try {
             g.execute(obj);
             g.get(1000, TimeUnit.MILLISECONDS);

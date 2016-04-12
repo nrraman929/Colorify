@@ -76,15 +76,29 @@ public class InstagramAPIHelper extends AsyncTask<Void, Void, String> {
                     System.out.println(data.getJSONObject(i)); // print returned json objects
                 }
                 ArrayList<String> tester = new ArrayList<>();
-                for(int i = 0; i < 5; i++) {
-                    JSONObject test = data.getJSONObject(i+1); //photo at index 1
+                ArrayList<Photo> photoList = new ArrayList<>();
+                for(int i = 0; i < data.length(); i++) {
+                    JSONObject test = data.getJSONObject(i); //photo at index 1
                     JSONObject images = test.getJSONObject("images");
                     JSONObject thumbnail = images.getJSONObject("thumbnail");
                     String thumbnailUrl = thumbnail.getString("url");
-                    tester.add(thumbnailUrl);
+                    String highQuality = images.getJSONObject("standard_resolution").getString("url");
+
+                    String caption;
+                    if(!test.isNull("caption")){
+                        caption = test.getJSONObject("caption").getString("text");
+                    }else{
+                        caption = "";
+                    }
+                    //String tags = test.getString("tags");
+                    //String location = test.getString("location");
+                    Photo photo = new Photo(caption,"","", "myImage" + i);//location, tags, caption);
+                    //tester.add(thumbnailUrl);
+                    tester.add(highQuality);
+                    photoList.add(photo);
                 }
                 String[] array = tester.toArray(new String[0]);
-                activity.setJSON(array);
+                activity.setJSON(array, photoList);
                 //String thumbnail_url = thumbnail.getString("url");
 
                 /* Uncomment to see the returned color of the photo at index 1 */
