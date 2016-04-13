@@ -9,14 +9,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Search"
-        android:id="@+id/search"/>
+        android:id="@+id/search_edit_text"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Go"
-        android:layout_toRightOf="@id/search"/>
+        android:layout_toEndOf="@id/search_edit_text"/>
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_choice_spinner"
+        android:layout_below="@+id/search_edit_text"
+        android:prompt="@string/spinner_title"
+        android:entries="@array/spinner_choices"/>
     <ListView
-        android:layout_below="@+id/search"
+        android:layout_below="@+id/search_choice_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@android:id/list"
@@ -24,6 +31,6 @@
         android:cacheColorHint="@android:color/transparent"
         android:fastScrollEnabled="true"
         android:persistentDrawingCache="scrolling"
-        android:scrollingCache="false"></ListView>
+        android:scrollingCache="false"/>
 
 </RelativeLayout>

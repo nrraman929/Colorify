@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,10 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
@@ -34,7 +31,7 @@ public class ItemsList extends ListActivity {
     private ItemsAdapter adapter;
     private ArrayList<Parcelable> uris;
     //private ArrayList<Parcelable> u;
-    LruCache bitmapCache;
+    LruCache<Integer, Bitmap> bitmapCache;
     ItemsList itemsList;
     ArrayList<Photo> photoList = new ArrayList<>();
     @Override
@@ -46,11 +43,7 @@ public class ItemsList extends ListActivity {
         ArrayList<ClipData.Item> arrayList = new ArrayList<>();
         //Integer numImages = extras.getInt("uris");
         int cacheSize = 4 * 1024 * 1024; // 4MiB
-        bitmapCache = new LruCache(cacheSize) {
-            protected int sizeOf(String key, Bitmap value) {
-                return value.getByteCount();
-
-            }};
+        bitmapCache = new LruCache<>(cacheSize);
         ArrayList<Parcelable> dummy = extras.getParcelableArrayList("photos");
         for(Parcelable parcelable : dummy){
             photoList.add((Photo) parcelable);
@@ -86,10 +79,16 @@ public class ItemsList extends ListActivity {
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = vi.inflate(R.layout.items_list_item, null);
             }
-            TextView textView = (TextView) v.findViewById(R.id.list_item_title);
-            Bitmap it = (Bitmap) bitmapCache.get(position);//items.get(position);
-            Integer num = position;
-            textView.setText(photoList.get(position).getLocation());
+            TextView captionTextView = (TextView) v.findViewById(R.id.list_item_caption);
+            TextView likesTextView = (TextView) v.findViewById(R.id.list_item_likes);
+            TextView tagsTextView = (TextView) v.findViewById(R.id.list_item_tag);
+
+            Bitmap it = (Bitmap) bitmapCache.get(position);
+
+            Photo currentPhoto = photoList.get(position);
+            captionTextView.setText(currentPhoto.getCaption());
+            likesTextView.setText("Likes: " + currentPhoto.getLikes());
+
             ImageView iv = (ImageView) v.findViewById(R.id.list_item_image);
             if(it!=null){
                 if (iv != null) {
@@ -122,6 +121,8 @@ public class ItemsList extends ListActivity {
     public Bitmap getBitmapFromMemCache(Integer key) {
         return (Bitmap)bitmapCache.get(key);
     }
+
+
     class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
         private int data = 0;
@@ -146,7 +147,7 @@ public class ItemsList extends ListActivity {
         // Once complete, see if ImageView is still around and set bitmap.
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            if (imageViewReference != null && bitmap != null) {
+            if (bitmap != null) {
                 final ImageView imageView = imageViewReference.get();
                 if (imageView != null) {
                     imageView.setImageBitmap(bitmap);
@@ -155,7 +156,7 @@ public class ItemsList extends ListActivity {
         }
         private Bitmap getScaledImage(String imagePath){
             Bitmap bitmap = null;
-            Uri imageUri = Uri.parse ("file://"+mCtx.getCacheDir()+"/"+imagePath);
+            //Uri imageUri = Uri.parse ("file://"+mCtx.getCacheDir()+"/"+imagePath);
             try{
                 BitmapFactory.Options options = new BitmapFactory.Options();
 

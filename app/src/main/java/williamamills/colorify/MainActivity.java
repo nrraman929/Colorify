@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
                 Bundle extras = new Bundle();
                 ArrayList<Photo> testPhotoList = new ArrayList<Photo>();
                 for(Integer j = 0; j < 6; j++) {
-                    Photo p = new Photo(j.toString(), "", "", "");
+                    Photo p = new Photo(j.toString(), "", "", "", "");
                     testPhotoList.add(p);
                 }
                 GetBitmap g = new GetBitmap(getApplicationContext(), testPhotoList);

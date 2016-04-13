@@ -3,7 +3,7 @@ package williamamills.colorify;
 /**
  * Created by Nishant on 4/9/16.
  */
-import android.app.Activity;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -80,19 +80,27 @@ public class InstagramAPIHelper extends AsyncTask<Void, Void, String> {
                 for(int i = 0; i < data.length(); i++) {
                     JSONObject test = data.getJSONObject(i); //photo at index 1
                     JSONObject images = test.getJSONObject("images");
-                    JSONObject thumbnail = images.getJSONObject("thumbnail");
-                    String thumbnailUrl = thumbnail.getString("url");
+                    //JSONObject thumbnail = images.getJSONObject("thumbnail");
+                    //String thumbnailUrl = thumbnail.getString("url");
                     String highQuality = images.getJSONObject("standard_resolution").getString("url");
 
-                    String caption;
+                    String caption = "";
                     if(!test.isNull("caption")){
                         caption = test.getJSONObject("caption").getString("text");
-                    }else{
-                        caption = "";
                     }
-                    //String tags = test.getString("tags");
-                    //String location = test.getString("location");
-                    Photo photo = new Photo(caption,"","", "myImage" + i);//location, tags, caption);
+                    String tags = "";
+                    if(!test.isNull("tags")){
+                        tags = test.getString("tags");
+                    }
+                    String location = "";
+                    if(!test.isNull("location")){
+                        location = test.getString("location");
+                    }
+                    String likes = "";
+                    if(!test.isNull("likes")){
+                        likes = test.getJSONObject("likes").getString("count");
+                    }
+                    Photo photo = new Photo(caption, tags, likes, "myImage" + i, location);//location, tags, caption);
                     //tester.add(thumbnailUrl);
                     tester.add(highQuality);
                     photoList.add(photo);

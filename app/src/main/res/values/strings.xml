@@ -10,4 +10,12 @@
     <string name="title_activity_image_view">ImageViewActivity</string>
     <string name="title_activity_items_list">ItemsList</string>
     <string name="firebase_url">https://colorify.firebaseIO.com</string>
+    <string name="content_description">Image from Instagram</string>
+    <string name="spinner_title">Search Choice</string>
+
+    <string-array name="spinner_choices">
+        <item>Popular</item>
+        <item>Location</item>
+        <item>Color</item>
+    </string-array>
 </resources>

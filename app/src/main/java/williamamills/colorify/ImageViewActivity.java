@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 
@@ -25,9 +26,8 @@ public class ImageViewActivity extends Activity {
         try{
             imageView.setImageBitmap(BitmapFactory.decodeStream(openFileInput("myImage" + u)));
         }catch (FileNotFoundException e){
-
+            Toast.makeText(getApplicationContext(), "Image Not Found", Toast.LENGTH_SHORT);
         }
-        //imageView.setImageBitmap();
     }
 
     @Override
