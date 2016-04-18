@@ -75,9 +75,9 @@ public class InstagramAPIHelper extends AsyncTask<Void, Void, String> {
     protected String doInBackground(Void... urls) {
 
         try {
-           // URL url = new URL(API_URL);
+           URL url = new URL(API_URL);
             //locationLat.longitude*=-1;
-            URL url = new URL("https://api.instagram.com/v1/locations/search?lat=" + locationLat.latitude + "&lng="+ locationLat.longitude+ "&client_id=e05c462ebd86446ea48a5af73769b602");
+            //URL url = new URL("https://api.instagram.com/v1/locations/search?lat=" + locationLat.latitude + "&lng="+ locationLat.longitude+ "&client_id=e05c462ebd86446ea48a5af73769b602");
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));

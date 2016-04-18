@@ -31,8 +31,8 @@ public class ImageViewActivity extends Activity {
         }catch (FileNotFoundException e){
             Toast.makeText(getApplicationContext(), "Image Not Found", Toast.LENGTH_SHORT).show();
         }
-        Button previous = (Button) findViewById(R.id.previous_button);
-        Button next = (Button) findViewById(R.id.next_button);
+        final Button previous = (Button) findViewById(R.id.previous_button);
+        final Button next = (Button) findViewById(R.id.next_button);
         if(u.equals(0)){
             previous.setVisibility(View.INVISIBLE);
         }
@@ -41,6 +41,10 @@ public class ImageViewActivity extends Activity {
             public void onClick(View v) {
                 if(!u.equals(0)){
                     u--;
+                    if(u.equals(0)){
+                        previous.setVisibility(View.INVISIBLE);
+                    }
+                    next.setVisibility(View.VISIBLE);
                     try {
                         imageView.setImageBitmap(BitmapFactory.decodeStream(openFileInput("myImage" + u)));
                     }catch (FileNotFoundException e){
@@ -52,7 +56,18 @@ public class ImageViewActivity extends Activity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!u.equals(23)){
+                    u++;
+                    if(u.equals(23)){
+                        next.setVisibility(View.INVISIBLE);
+                    }
+                    previous.setVisibility(View.VISIBLE);
+                    try{
+                        imageView.setImageBitmap(BitmapFactory.decodeStream(openFileInput("myImage"+u)));
+                    }catch (FileNotFoundException e){
 
+                    }
+                }
             }
         });
 
