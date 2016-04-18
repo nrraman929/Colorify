@@ -44,6 +44,7 @@ public class GetBitmap extends AsyncTask<String, Void, ArrayList<Bitmap>> {
         ArrayList<Bitmap> arrayList = new ArrayList<>();
         try {
             //URL url = new URL(urls[0]);
+            boolean success = false;
             for(String u : urls) {
                 java.net.URL url = new java.net.URL(u);
                 HttpURLConnection connection = (HttpURLConnection) url
@@ -51,8 +52,10 @@ public class GetBitmap extends AsyncTask<String, Void, ArrayList<Bitmap>> {
                 connection.setDoInput(true);
                 connection.connect();
                 InputStream input = connection.getInputStream();
-                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                Bitmap myBitmap = BitmapFactory.decodeStream(input); //// FIXME: 4/13/2016
                 arrayList.add(myBitmap);
+                myBitmap.recycle();
+                success = true;
             }
             return arrayList;
         } catch (IOException e) {

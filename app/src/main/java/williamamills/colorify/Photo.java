@@ -28,6 +28,8 @@ public class Photo implements Parcelable{
     public void setBitmapAddress(String _bitmapAddress){
         bitmapAddress = _bitmapAddress;
     }
+
+
     // Parcelling part
     public Photo(Parcel in){
         String[] data = new String[5];

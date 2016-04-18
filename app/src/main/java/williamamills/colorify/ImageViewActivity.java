@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -15,6 +17,7 @@ import java.io.FileNotFoundException;
 
 public class ImageViewActivity extends Activity {
     ImageView imageView;
+    Integer u;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +25,37 @@ public class ImageViewActivity extends Activity {
         setContentView(R.layout.activity_image_view);
         imageView = (ImageView) findViewById(R.id.image);
         Bundle extras = getIntent().getExtras();
-        Integer u = extras.getInt("uri");
+        u = extras.getInt("uri");
         try{
             imageView.setImageBitmap(BitmapFactory.decodeStream(openFileInput("myImage" + u)));
         }catch (FileNotFoundException e){
-            Toast.makeText(getApplicationContext(), "Image Not Found", Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(), "Image Not Found", Toast.LENGTH_SHORT).show();
         }
+        Button previous = (Button) findViewById(R.id.previous_button);
+        Button next = (Button) findViewById(R.id.next_button);
+        if(u.equals(0)){
+            previous.setVisibility(View.INVISIBLE);
+        }
+        previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!u.equals(0)){
+                    u--;
+                    try {
+                        imageView.setImageBitmap(BitmapFactory.decodeStream(openFileInput("myImage" + u)));
+                    }catch (FileNotFoundException e){
+
+                    }
+                }
+            }
+        });
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
     @Override
