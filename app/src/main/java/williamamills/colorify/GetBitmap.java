@@ -54,7 +54,7 @@ public class GetBitmap extends AsyncTask<String, Void, ArrayList<Bitmap>> {
                 InputStream input = connection.getInputStream();
                 Bitmap myBitmap = BitmapFactory.decodeStream(input); //// FIXME: 4/13/2016
                 arrayList.add(myBitmap);
-                myBitmap.recycle();
+                //myBitmap.recycle();
                 success = true;
             }
             return arrayList;
