@@ -19,11 +19,23 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
 public class MainActivity extends Activity {
     Button mainButton;
     JSONArray j;
+
+    static {
+        System.loadLibrary("opencv_java3");
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainButton = (Button) findViewById(R.id.main_enter);
@@ -56,22 +68,8 @@ public class MainActivity extends Activity {
         mainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), ItemsList.class);
-                ArrayList<Bitmap> uris = new ArrayList<Bitmap>();
-                Bundle extras = new Bundle();
-                ArrayList<Photo> testPhotoList = new ArrayList<Photo>();
-                for(Integer j = 0; j < 5; j++) {
-                    Photo p = new Photo(j.toString(), "", "", "", "");
-                    testPhotoList.add(p);
-                }
-                GetBitmap g = new GetBitmap(getApplicationContext(), testPhotoList);
-                try {
-                    g.execute("https://scontent.cdninstagram.com/t51.2885-15/s150x150/e35/12445772_589126311254658_1821092435_n.jpg", "http://assets9.pop-buzz.com/2015/50/neko-atsume-header-1450446679-responsive-large-0.jpg", "http://nerdist.com/wp-content/uploads/2015/12/Supernatural-Neko-Atsume-12302015.jpg","https://i.imgur.com/WJED9LY.png","http://i.imgur.com/H5j8qy6.jpg").get();
-                    g.get(1000, TimeUnit.MILLISECONDS);
-                }catch(Exception e){
-
-                }
-               // startActivity(i);
+               OpenCVHelper opencv = new OpenCVHelper(getApplicationContext());
+                opencv.execute();
             }
         });
         Button b2 = (Button) findViewById(R.id.b2);
